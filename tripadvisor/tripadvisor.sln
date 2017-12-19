@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tripadvisor", "tripadvisor\tripadvisor.csproj", "{4E381425-E292-4C07-8DC5-A71C437D6D2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tripadvisorTests", "tripadvisorTests\tripadvisorTests.csproj", "{2536D165-8FAE-4F42-AC97-DB0AA50465CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E381425-E292-4C07-8DC5-A71C437D6D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E381425-E292-4C07-8DC5-A71C437D6D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E381425-E292-4C07-8DC5-A71C437D6D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E381425-E292-4C07-8DC5-A71C437D6D2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2536D165-8FAE-4F42-AC97-DB0AA50465CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2536D165-8FAE-4F42-AC97-DB0AA50465CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2536D165-8FAE-4F42-AC97-DB0AA50465CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2536D165-8FAE-4F42-AC97-DB0AA50465CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9316AE57-B58D-45A2-A491-7004440B6BCA}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\bin\Debug\tripadvisor.exe.config
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\bin\Debug\tripadvisor.exe
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\bin\Debug\tripadvisor.pdb
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\obj\Debug\tripadvisor.csproj.CoreCompileInputs.cache
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\obj\Debug\tripadvisor.exe
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\obj\Debug\tripadvisor.pdb
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\obj\Debug\tripadvisor.Form1.resources
+C:\Users\cleyb\source\repos\tripadvisor\tripadvisor\obj\Debug\tripadvisor.csproj.GenerateResource.Cache
