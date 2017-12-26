@@ -24,7 +24,12 @@ namespace firebaseApplication
             listView1.GridLines = true;
             listView1.FullRowSelect = true;
             this.renderPasswords();
-            //this.c.getListPasswords("Y2xleUBnbWFpbC5jb20=").Subscribe(d => d.ToString());
+            this.c.getListPasswords().AsObservable<Passwords>().Subscribe(d => teste(d));
+        }
+
+        public void teste(Firebase.Database.Streaming.FirebaseEvent<Passwords> d)
+        {
+            Console.WriteLine(d.Key);
         }
 
         public async void renderPasswords()

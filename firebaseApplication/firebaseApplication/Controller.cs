@@ -114,7 +114,7 @@ namespace firebaseApplication.controller
             }
             catch (Exception ex)
             {
-                System.ArgumentException argEx = new System.ArgumentException("Index is out of range", ex);
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
                 throw argEx;
             }
         }
@@ -127,7 +127,7 @@ namespace firebaseApplication.controller
             }
             catch (Exception ex)
             {
-                System.ArgumentException argEx = new System.ArgumentException("Index is out of range", ex);
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
                 throw argEx;
             }
         }
