@@ -16,9 +16,9 @@ namespace firebaseApplication
         Controller c;
         ListPasswords listPassword;
 
-        public AddPassword(ListPasswords listPassword)
+        public AddPassword(ListPasswords listPassword, Controller c)
         {
-            this.c = new Controller();
+            this.c = c;
             this.listPassword = listPassword;
             InitializeComponent();
         }

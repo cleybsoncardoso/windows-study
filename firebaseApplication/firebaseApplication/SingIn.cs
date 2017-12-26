@@ -20,8 +20,11 @@ namespace firebaseApplication
         {
             InitializeComponent();
             this.c = new Controller();
-            textBoxEmail.Text = "cley@gmail.com";
-            TextBoxPassword.Text = "123456";
+        }
+
+        void myButton_Click(Object sender, System.EventArgs e)
+        {
+            MessageBox.Show("Click");
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -31,8 +34,7 @@ namespace firebaseApplication
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new SingUp(this).Show();
-            this.Hide();
+            
         }
 
         public void UserCriado(string email)
@@ -46,13 +48,20 @@ namespace firebaseApplication
             try
             {
                 this.c.login(this.textBoxEmail.Text, this.TextBoxPassword.Text);
-                new ListPasswords().Show();
+                new ListPasswords(this.c).Show();
                 this.TextBoxPassword.Text = "";
                 this.Hide();
             } catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            new SingUp(this).Show();
+            this.Hide();
         }
     }
 }

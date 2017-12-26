@@ -13,11 +13,12 @@ namespace firebaseApplication
 {
     public partial class ListPasswords : Form
     {
-        Controller c = new Controller();
+        Controller c;
         IReadOnlyCollection<Firebase.Database.FirebaseObject<Passwords>> passWordFirebase;
 
-        public ListPasswords()
+        public ListPasswords(Controller c)
         {
+            this.c = c;
             InitializeComponent();
             listView1.View = View.Details;
             listView1.GridLines = true;
@@ -28,6 +29,9 @@ namespace firebaseApplication
 
         public async void renderPasswords()
         {
+            try
+            {
+
             this.passWordFirebase = await this.c.getListPasswords().OnceAsync<Passwords>();
             listView1.Items.Clear();
             int count = 1;
@@ -38,11 +42,16 @@ namespace firebaseApplication
                 listView1.Items.Add(itm);
                 count++;
             }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new AddPassword(this).Show();
+            new AddPassword(this, this.c).Show();
         }
 
         private Passwords getItem(String login)

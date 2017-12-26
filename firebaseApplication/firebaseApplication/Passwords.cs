@@ -15,10 +15,10 @@ namespace firebaseApplication
 
         public Passwords(string login, string password)
         {
-            if (login.Equals(""))
+            if (login == null || login.Equals(""))
             {
                 throw new ExceptionEmail();
-            } else if(password.Length < 4)
+            } else if(password == null || password.Length < 4)
             {
                 throw new ExceptionPasswordLength();
             }

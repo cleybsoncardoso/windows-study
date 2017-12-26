@@ -15,7 +15,6 @@ namespace firebaseApplication
     {
         static void Main(string[] args)
         {
-            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SingIn());
 
         }

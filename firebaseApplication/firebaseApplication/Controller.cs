@@ -13,7 +13,7 @@ namespace firebaseApplication.controller
     public class Controller
     {
         FirebaseDatabase fbData;
-        String key = "Y2xleUBnbWFpbC5jb20=";
+        String key = "";
         FirebaseAuthProvider ap = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyDYoS-EC1BDb1Wlig9wbl_0R-y2mU-0cq8"));
 
         public Controller()
@@ -38,6 +38,7 @@ namespace firebaseApplication.controller
                 Console.WriteLine(!auth.FirebaseToken.Equals(""));
                 if (!auth.FirebaseToken.Equals(""))
                 {
+                    Console.Write(auth.User.Email);
                     this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(auth.User.Email));
                 }
             }

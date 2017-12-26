@@ -118,6 +118,9 @@
     <Compile Include="AddPassword.Designer.cs">
       <DependentUpon>AddPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controller.cs" />
     <Compile Include="ExceptionEmail.cs" />
     <Compile Include="ExceptionPasswordLength.cs" />
@@ -161,6 +164,9 @@
     <EmbeddedResource Include="SingUp.resx">
       <DependentUpon>SingUp.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
