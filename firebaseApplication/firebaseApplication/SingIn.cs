@@ -20,6 +20,8 @@ namespace firebaseApplication
         {
             InitializeComponent();
             this.c = new Controller();
+            this.textBoxEmail.Text = "cley@gmail.com";
+            this.TextBoxPassword.Text = "123456";
         }
 
         void myButton_Click(Object sender, System.EventArgs e)
@@ -43,11 +45,11 @@ namespace firebaseApplication
             this.TextBoxPassword.Text = "";
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             try
             {
-                this.c.login(this.textBoxEmail.Text, this.TextBoxPassword.Text);
+                FirebaseAuthLink fba = await this.c.login(this.textBoxEmail.Text, this.TextBoxPassword.Text);
                 new ListPasswords(this.c).Show();
                 this.TextBoxPassword.Text = "";
                 this.Hide();

@@ -22,7 +22,7 @@ namespace firebaseApplication.controller
         }
 
 
-        public async void login(string login, string password)
+        public async Task<FirebaseAuthLink> login(string login, string password)
         {
             if (login.Equals(""))
             {
@@ -40,7 +40,9 @@ namespace firebaseApplication.controller
                 {
                     Console.Write(auth.User.Email);
                     this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(auth.User.Email));
+                    Console.Write(this.key);
                 }
+                return auth;
             }
             catch (Exception ex)
             {
@@ -106,6 +108,8 @@ namespace firebaseApplication.controller
         {
             try
             {
+                Console.WriteLine("this.key");
+                Console.WriteLine(this.key);
                 return this.fbData.getPasswords(this.key);
             }
             catch (Exception ex)
