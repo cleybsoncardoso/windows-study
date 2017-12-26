@@ -11,29 +11,25 @@ using System.Windows.Forms;
 
 namespace firebaseApplication
 {
-    public partial class SingUp : Form
+    public partial class AddPassword : Form
     {
+        Controller c;
+        ListPasswords listPassword;
 
-        Controller c = new Controller();
-        SingIn singIn;
-
-        public SingUp(SingIn singIn)
+        public AddPassword(ListPasswords listPassword)
         {
+            this.c = new Controller();
+            this.listPassword = listPassword;
             InitializeComponent();
-            this.singIn = singIn;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                Console.WriteLine(this.textBoxEmail.Text);
-                Console.WriteLine(this.TextBoxPassword.Text);
-                this.c.createUser(this.textBoxEmail.Text, this.TextBoxPassword.Text);
-                MessageBox.Show("create with success");
-                this.singIn.Show();
-                this.singIn.UserCriado(this.textBoxEmail.Text);
-                this.Dispose();
+                this.c.addPassword(new Passwords(this.textBox1.Text, this.textBox2.Text));
+                MessageBox.Show("Password added with success");
+                this.listPassword.renderPasswords();
             }
             catch (Exception ex)
             {

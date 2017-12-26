@@ -1,4 +1,7 @@
-﻿using FirebaseApplication;
+﻿using Firebase.Auth;
+using firebaseApplication.email;
+using firebaseApplication.password;
+using FirebaseApplication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +13,54 @@ namespace firebaseApplication.controller
     public class Controller
     {
         FirebaseDatabase fbData;
-        FirebaseAutentication fba;
-        List<Passwords> passwords;
-
+        String key = "Y2xleUBnbWFpbC5jb20=";
+        FirebaseAuthProvider ap = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyDYoS-EC1BDb1Wlig9wbl_0R-y2mU-0cq8"));
+ 
         public Controller()
         {
             this.fbData = new FirebaseDatabase();
-            this.fba = new FirebaseAutentication();
         }
 
-        public bool login(string login, string password)
+
+        public async void login(string login, string password)
         {
+            if (login.Equals(""))
+            {
+                throw new ExceptionEmail();
+            }
+            else if (password.Length < 6)
+            {
+                throw new ExceptionPasswordLength();
+            }
             try
             {
-                this.fba.SingIn(login, password);
+                var auth = await this.ap.SignInWithEmailAndPasswordAsync(login, password);
+                Console.WriteLine(!auth.FirebaseToken.Equals(""));
+                if (!auth.FirebaseToken.Equals(""))
+                {
+                    this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(auth.User.Email));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.TargetSite);
+                throw new Exception();
+            }
+        }
+
+        public bool createUser(string login, string password)
+        {
+            if (login.Equals(""))
+            {
+                throw new ExceptionEmail();
+            }
+            else if (password.Length < 6)
+            {
+                throw new ExceptionPasswordLength();
+            }
+            try
+            {
+                this.ap.CreateUserWithEmailAndPasswordAsync(login, password);
                 return true;
             }
             catch (Exception ex)
@@ -32,22 +69,21 @@ namespace firebaseApplication.controller
             }
         }
 
-        public void addPassword(string uid, List<Passwords> passwords)
+        public void addPassword(Passwords passwords)
         {
-            this.fbData.addPassword(uid, passwords);
+            this.fbData.addPassword(this.key, passwords);
         }
 
-        public List<Passwords> getListPasswords(string uid)
+        public Firebase.Database.Query.ChildQuery getListPasswords()
         {
             try
             {
-                return this.fbData.getPasswords(uid);
+                return this.fbData.getPasswords(this.key);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw ex;
             }
-            return null;
         }
     }
 }

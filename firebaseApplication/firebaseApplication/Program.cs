@@ -1,5 +1,7 @@
-﻿using firebaseApplication.controller;
+﻿using Firebase.Database;
+using firebaseApplication.controller;
 using FirebaseApplication;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace firebaseApplication
         {
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SingIn());
+
         }
     }
 }

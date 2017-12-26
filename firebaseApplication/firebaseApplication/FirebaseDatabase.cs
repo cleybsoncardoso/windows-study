@@ -1,8 +1,5 @@
-﻿using firebaseApplication;
-using FireSharp;
-using FireSharp.Config;
-using FireSharp.Interfaces;
-using FireSharp.Response;
+﻿using Firebase.Database;
+using firebaseApplication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,41 +12,45 @@ namespace FirebaseApplication
     public class FirebaseDatabase
     {
 
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            BasePath = "https://application-cshar.firebaseio.com/"
-        };
         FirebaseClient client;
 
         public FirebaseDatabase()
         {
-           this.client = new FirebaseClient(config);
+            this.client = new FirebaseClient("https://application-cshar.firebaseio.com/"); ;
         }
 
-        public async void addPassword(string uid, List<Passwords> passwords)
+        public void addPassword(string uid, Passwords passwords)
         {
             try
             {
-                var response = this.client.SetAsync("password/"+uid, passwords);
-                Console.WriteLine("_______");
-                Console.WriteLine(response.Result);
+                this.client.Child("password/" + uid).PostAsync(JsonConvert.SerializeObject(passwords));
 
-            } catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public List<Passwords> getPasswords(string uid)
-        {
-            try
-            {
-                var response = this.client.GetAsync("password/" + uid);
-                return response.Result.ResultAs<List<Passwords>>();
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public Firebase.Database.Query.ChildQuery getPasswords(string key)
+        {
+            try
+            {
+                //this.client.Child("password/").AsObservable<List<Passwords>>().Subscribe(d => Console.WriteLine(d.Key));
+                return this.client.Child("password/" + key);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async void tete(string key)
+        {
+            var dinos = await this.client.Child("password/" + key).OnceAsync<Passwords>();
+            foreach (var dino in dinos)
+            {
+                Console.WriteLine($"{dino.Key} is {dino.Object.Login}m high.");
             }
         }
     }
