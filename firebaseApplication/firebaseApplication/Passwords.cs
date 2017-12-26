@@ -1,4 +1,6 @@
-﻿using System;
+﻿using firebaseApplication.email;
+using firebaseApplication.password;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,13 @@ namespace firebaseApplication
 
         public Passwords(string login, string password)
         {
+            if (login.Equals(""))
+            {
+                throw new ExceptionEmail();
+            } else if(password.Length < 4)
+            {
+                throw new ExceptionPasswordLength();
+            }
             this.login = login;
             this.password = password;
         }

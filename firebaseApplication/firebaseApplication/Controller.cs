@@ -15,7 +15,7 @@ namespace firebaseApplication.controller
         FirebaseDatabase fbData;
         String key = "Y2xleUBnbWFpbC5jb20=";
         FirebaseAuthProvider ap = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyDYoS-EC1BDb1Wlig9wbl_0R-y2mU-0cq8"));
- 
+
         public Controller()
         {
             this.fbData = new FirebaseDatabase();
@@ -41,10 +41,10 @@ namespace firebaseApplication.controller
                     this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(auth.User.Email));
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.TargetSite);
-                throw new Exception();
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
 
@@ -65,13 +65,40 @@ namespace firebaseApplication.controller
             }
             catch (Exception ex)
             {
-                throw ex;
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
 
         public void addPassword(Passwords passwords)
         {
             this.fbData.addPassword(this.key, passwords);
+        }
+
+        public void updatePassword(string keyPassword, Passwords passwords)
+        {
+            try
+            {
+                this.fbData.updatePassword(this.key, keyPassword, passwords);
+            }
+            catch (Exception ex)
+            {
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
+            }
+        }
+
+        public void deletePassword(string keyPassword)
+        {
+            try
+            {
+                this.fbData.deletePassword(this.key, keyPassword);
+            }
+            catch (Exception ex)
+            {
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
+            }
         }
 
         public Firebase.Database.Query.ChildQuery getListPasswords()
@@ -82,7 +109,21 @@ namespace firebaseApplication.controller
             }
             catch (Exception ex)
             {
-                throw ex;
+                System.ArgumentException argEx = new System.ArgumentException("Index is out of range", ex);
+                throw argEx;
+            }
+        }
+
+        public Firebase.Database.Query.ChildQuery getListPasswords(String keyPassword)
+        {
+            try
+            {
+                return this.fbData.getPasswords(this.key + "/" + keyPassword);
+            }
+            catch (Exception ex)
+            {
+                System.ArgumentException argEx = new System.ArgumentException("Index is out of range", ex);
+                throw argEx;
             }
         }
     }

@@ -32,6 +32,32 @@ namespace FirebaseApplication
             }
         }
 
+        public void updatePassword(string key, string keyPassword, Passwords passwords)
+        {
+            try
+            {
+                this.client.Child("password/" + key + "/" + keyPassword).PutAsync(JsonConvert.SerializeObject(passwords));
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void deletePassword(string key, string keyPassword)
+        {
+            try
+            {
+                this.client.Child("password/" + key + "/" + keyPassword).DeleteAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public Firebase.Database.Query.ChildQuery getPasswords(string key)
         {
             try

@@ -30,6 +30,7 @@ namespace firebaseApplication
                 this.c.addPassword(new Passwords(this.textBox1.Text, this.textBox2.Text));
                 MessageBox.Show("Password added with success");
                 this.listPassword.renderPasswords();
+                this.Dispose();
             }
             catch (Exception ex)
             {
