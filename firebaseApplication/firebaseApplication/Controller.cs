@@ -1,5 +1,7 @@
 ﻿using Firebase.Auth;
+using firebaseApplication.autentication;
 using firebaseApplication.email;
+using firebaseApplication.model;
 using firebaseApplication.password;
 using FirebaseApplication;
 using System;
@@ -12,37 +14,26 @@ namespace firebaseApplication.controller
 {
     public class Controller
     {
-        FirebaseDatabase fbData;
-        String key = "";
-        FirebaseAuthProvider ap = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyDYoS-EC1BDb1Wlig9wbl_0R-y2mU-0cq8"));
+        FirebaseDatabase firebaseDatabase;
+        FirebaseAutentication firebaseAutentication;
+        String key = ""; //key to access password list of user logger
+        FirebaseAuthLink userLogged;
 
         public Controller()
         {
-            this.fbData = new FirebaseDatabase();
+            this.firebaseDatabase = new FirebaseDatabase();
+            this.firebaseAutentication = new FirebaseAutentication();
         }
 
-
+        //method for make login of user
         public async Task<FirebaseAuthLink> login(string login, string password)
         {
-            if (login.Equals(""))
-            {
-                throw new ExceptionEmail();
-            }
-            else if (password.Length < 6)
-            {
-                throw new ExceptionPasswordLength();
-            }
             try
             {
-                var auth = await this.ap.SignInWithEmailAndPasswordAsync(login, password);
-                Console.WriteLine(!auth.FirebaseToken.Equals(""));
-                if (!auth.FirebaseToken.Equals(""))
-                {
-                    Console.Write(auth.User.Email);
-                    this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(auth.User.Email));
-                    Console.Write(this.key);
-                }
-                return auth;
+
+                this.userLogged = await this.firebaseAutentication.login(login, password);
+                this.key = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(this.userLogged.User.Email));
+                return this.userLogged;
             }
             catch (Exception ex)
             {
@@ -51,38 +42,36 @@ namespace firebaseApplication.controller
             }
         }
 
-        public bool createUser(string login, string password)
+        //method for create user
+        public async Task<FirebaseAuthLink> createUser(string login, string password)
         {
-            if (login.Equals(""))
-            {
-                throw new ExceptionEmail();
-            }
-            else if (password.Length < 6)
-            {
-                throw new ExceptionPasswordLength();
-            }
             try
             {
-                this.ap.CreateUserWithEmailAndPasswordAsync(login, password);
-                return true;
+                //create user
+                return await this.firebaseAutentication.createUser(login, password);
             }
             catch (Exception ex)
             {
                 System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                //if the erro is Email existing, modify message of erro
+                if (ex.Message.Contains("EmailExist"))
+                {
+                    argEx = new System.ArgumentException("Email already registered", ex);
+                }
                 throw argEx;
             }
         }
 
         public void addPassword(Passwords passwords)
         {
-            this.fbData.addPassword(this.key, passwords);
+            this.firebaseDatabase.addPassword(this.key, passwords);
         }
 
         public void updatePassword(string keyPassword, Passwords passwords)
         {
             try
             {
-                this.fbData.updatePassword(this.key, keyPassword, passwords);
+                this.firebaseDatabase.updatePassword(this.key, keyPassword, passwords);
             }
             catch (Exception ex)
             {
@@ -95,7 +84,7 @@ namespace firebaseApplication.controller
         {
             try
             {
-                this.fbData.deletePassword(this.key, keyPassword);
+                this.firebaseDatabase.deletePassword(this.key, keyPassword);
             }
             catch (Exception ex)
             {
@@ -104,26 +93,15 @@ namespace firebaseApplication.controller
             }
         }
 
-        public Firebase.Database.Query.ChildQuery getListPasswords()
+        /*
+         * Get list passwords
+         * 
+         */
+        public async Task<IReadOnlyCollection<Firebase.Database.FirebaseObject<Passwords>>> getListPasswords()
         {
             try
             {
-                Console.WriteLine("this.key");
-                Console.WriteLine(this.key);
-                return this.fbData.getPasswords(this.key);
-            }
-            catch (Exception ex)
-            {
-                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
-                throw argEx;
-            }
-        }
-
-        public Firebase.Database.Query.ChildQuery getListPasswords(String keyPassword)
-        {
-            try
-            {
-                return this.fbData.getPasswords(this.key + "/" + keyPassword);
+                return await this.firebaseDatabase.getPasswords(this.key);
             }
             catch (Exception ex)
             {

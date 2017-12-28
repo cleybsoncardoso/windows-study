@@ -11,28 +11,26 @@ using System.Windows.Forms;
 
 namespace firebaseApplication
 {
-    public partial class SingUp : Form
+    /*
+     * Class of sign up users
+     */
+    public partial class SignUp : Form
     {
 
-        Controller c = new Controller();
-        SingIn singIn;
+        Controller controller = new Controller();
 
-        public SingUp(SingIn singIn)
+        public SignUp()
         {
             InitializeComponent();
-            this.singIn = singIn;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        //method for create of user
+        private async void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                Console.WriteLine(this.textBoxEmail.Text);
-                Console.WriteLine(this.TextBoxPassword.Text);
-                this.c.createUser(this.textBoxEmail.Text, this.TextBoxPassword.Text);
+                await this.controller.createUser(this.textBoxEmail.Text, this.TextBoxPassword.Text);
                 MessageBox.Show("create with success");
-                this.singIn.Show();
-                this.singIn.UserCriado(this.textBoxEmail.Text);
                 this.Dispose();
             }
             catch (Exception ex)

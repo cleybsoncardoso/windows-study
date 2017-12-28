@@ -124,6 +124,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="ExceptionEmail.cs" />
     <Compile Include="ExceptionPasswordLength.cs" />
+    <Compile Include="FirebaseAutentication.cs" />
     <Compile Include="FirebaseDatabase.cs" />
     <Compile Include="ListPasswords.cs">
       <SubType>Form</SubType>

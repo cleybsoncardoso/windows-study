@@ -1,85 +1,115 @@
 ﻿using firebaseApplication.controller;
+using firebaseApplication.model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace firebaseApplication
 {
+    /*
+     * Class for manager password
+     * 
+     * 
+     */
     public partial class ListPasswords : Form
     {
-        Controller c;
+        Controller controller;
         IReadOnlyCollection<Firebase.Database.FirebaseObject<Passwords>> passWordFirebase;
 
-        public ListPasswords(Controller c)
+        public ListPasswords(Controller controller)
         {
-            this.c = c;
+            this.controller = controller;
             InitializeComponent();
+            //render columns and values of table
             listView1.View = View.Details;
+            //show lines between cell of th table
             listView1.GridLines = true;
+            //allows to select line of the table
             listView1.FullRowSelect = true;
+            //render passwords in table
             this.renderPasswords();
-            this.c.getListPasswords().AsObservable<Passwords>().Subscribe(d => teste(d));
         }
 
-        public void teste(Firebase.Database.Streaming.FirebaseEvent<Passwords> d)
-        {
-            Console.WriteLine(d.Key);
-        }
-
+        /*
+         * method for to render passwords of the user in table
+         * 
+         */
         public async void renderPasswords()
         {
             try
             {
 
-            this.passWordFirebase = await this.c.getListPasswords().OnceAsync<Passwords>();
-            listView1.Items.Clear();
-            int count = 1;
-            foreach (var passwordCurrent in this.passWordFirebase)
-            {
-                Passwords aux = (Passwords)passwordCurrent.Object;
-                ListViewItem itm = new ListViewItem(new String[3] { count.ToString(), aux.Login, aux.Password });
-                listView1.Items.Add(itm);
-                count++;
+                this.passWordFirebase = await this.controller.getListPasswords();
+                // clean table to render the updated password list
+                listView1.Items.Clear();
+                // position of the element in the table for find direct in list
+                int count = 0;
+                foreach (var passwordCurrent in this.passWordFirebase)
+                {
+                    
+                    count++;
+                    Passwords aux = (Passwords)passwordCurrent.Object;
+                    ListViewItem itm = new ListViewItem(new String[3] { count.ToString(), aux.Login, aux.Password });
+                    listView1.Items.Add(itm);
+                }
+                // clears data in login and password of the selected item in the list
+                this.textBoxLoginView.Text = "";
+                this.textBoxPasswordView.Text = "";
             }
-            } catch (Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
 
         }
 
+        /*
+         * create password
+         * 
+         */
         private void button1_Click(object sender, EventArgs e)
         {
-            new AddPassword(this, this.c).Show();
+            using (AddPassword signUp = new AddPassword(this.controller))
+            {
+                new AddPassword(this.controller).ShowDialog();
+                this.renderPasswords();
+            }
         }
 
-        private Passwords getItem(String login)
-        {
-            return null;
-        }
-
+        /*
+         * method for select a password
+         * 
+         * 
+         */
         private void listView1_Click(object sender, EventArgs e)
         {
+            //item selected
             var itemSelected = listView1.SelectedItems[0];
+            //get password by id of the selected
             var aux = (Passwords)this.passWordFirebase.ElementAt(Int32.Parse(itemSelected.SubItems[0].Text) - 1).Object;
+            // fill in the data with the selected password
             this.textBoxLoginView.Text = aux.Login;
-            this.textBoxPasswordView.Text = aux.Password;
-            Console.WriteLine(aux.Login);
+            this.textBoxPasswordView.Text = aux.decrypt();
         }
 
+        /*
+         * update values of the password
+         * 
+         */
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
                 var itemSelected = listView1.SelectedItems[0];
                 var aux = this.passWordFirebase.ElementAt(Int32.Parse(itemSelected.SubItems[0].Text) - 1);
-                this.c.updatePassword(aux.Key, new Passwords(this.textBoxLoginView.Text, this.textBoxPasswordView.Text));
+                this.controller.updatePassword(aux.Key, new Passwords(this.textBoxLoginView.Text, this.textBoxPasswordView.Text).encrypt());
                 MessageBox.Show("Update success");
                 this.renderPasswords();
             }
@@ -93,16 +123,19 @@ namespace firebaseApplication
             }
         }
 
+
+        /*
+         * Delete password
+         * 
+         */
         private void button3_Click(object sender, EventArgs e)
         {
             try
             {
                 var itemSelected = listView1.SelectedItems[0];
                 var aux = this.passWordFirebase.ElementAt(Int32.Parse(itemSelected.SubItems[0].Text) - 1);
-                this.c.deletePassword(aux.Key);
+                this.controller.deletePassword(aux.Key);
                 MessageBox.Show("Deleted with success");
-                this.textBoxLoginView.Text = "";
-                this.textBoxPasswordView.Text = "";
                 this.renderPasswords();
             }
             catch (ArgumentOutOfRangeException ex)

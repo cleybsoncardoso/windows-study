@@ -1,6 +1,6 @@
 ﻿namespace firebaseApplication
 {
-    partial class SingUp
+    partial class SignUp
     {
         /// <summary>
         /// Required designer variable.

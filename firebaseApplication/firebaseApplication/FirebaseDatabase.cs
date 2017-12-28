@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using firebaseApplication;
+using firebaseApplication.model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,64 +20,83 @@ namespace FirebaseApplication
             this.client = new FirebaseClient("https://application-cshar.firebaseio.com/"); ;
         }
 
-        public void addPassword(string uid, Passwords passwords)
+        /*
+         * 
+         * Add new password
+         * 
+         * string key = Base64 email to find user data
+         * Passwords passwords = new password for register
+         */
+        public async void addPassword(string key, Passwords passwords)
         {
             try
             {
-                this.client.Child("password/" + uid).PostAsync(JsonConvert.SerializeObject(passwords));
+                await this.client.Child("password/" + key).PostAsync(JsonConvert.SerializeObject(passwords));
 
             }
             catch (Exception ex)
             {
-                throw ex;
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
 
-        public void updatePassword(string key, string keyPassword, Passwords passwords)
+        /*
+         * Update data of password
+         * string key = Base64 email to find user data
+         * string keyPassword = password firebase key that will be changed 
+         * Passwords passwords = password changed
+         */
+        public async void updatePassword(string key, string keyPassword, Passwords passwords)
         {
             try
             {
-                this.client.Child("password/" + key + "/" + keyPassword).PutAsync(JsonConvert.SerializeObject(passwords));
+                await this.client.Child("password/" + key + "/" + keyPassword).PutAsync(JsonConvert.SerializeObject(passwords));
 
             }
             catch (Exception ex)
             {
-                throw ex;
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
 
-        public void deletePassword(string key, string keyPassword)
+        /*
+         * Delete password
+         * 
+         * string key = Base64 email to find user data
+         * string keyPassword = password firebase key that will be deleted 
+         * 
+         */
+        public async void deletePassword(string key, string keyPassword)
         {
             try
             {
-                this.client.Child("password/" + key + "/" + keyPassword).DeleteAsync();
+                await this.client.Child("password/" + key + "/" + keyPassword).DeleteAsync();
 
             }
             catch (Exception ex)
             {
-                throw ex;
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
 
-        public Firebase.Database.Query.ChildQuery getPasswords(string key)
+        /*
+         * Method return all passwords registered
+         * 
+         * string key = Email in base64
+         */
+        public async Task<IReadOnlyCollection<Firebase.Database.FirebaseObject<Passwords>>> getPasswords(string key)
         {
             try
             {
-                //this.client.Child("password/").AsObservable<List<Passwords>>().Subscribe(d => Console.WriteLine(d.Key));
-                return this.client.Child("password/" + key);
+                return await this.client.Child("password/" + key).OnceAsync<Passwords>();
             }
             catch (Exception ex)
             {
-                throw ex;
-            }
-        }
-
-        public async void tete(string key)
-        {
-            var dinos = await this.client.Child("password/" + key).OnceAsync<Passwords>();
-            foreach (var dino in dinos)
-            {
-                Console.WriteLine($"{dino.Key} is {dino.Object.Login}m high.");
+                System.ArgumentException argEx = new System.ArgumentException(ex.Message, ex);
+                throw argEx;
             }
         }
     }

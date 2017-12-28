@@ -1,4 +1,5 @@
 ﻿using firebaseApplication.controller;
+using firebaseApplication.model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,12 +15,10 @@ namespace firebaseApplication
     public partial class AddPassword : Form
     {
         Controller c;
-        ListPasswords listPassword;
 
-        public AddPassword(ListPasswords listPassword, Controller c)
+        public AddPassword( Controller c)
         {
             this.c = c;
-            this.listPassword = listPassword;
             InitializeComponent();
         }
 
@@ -27,9 +26,8 @@ namespace firebaseApplication
         {
             try
             {
-                this.c.addPassword(new Passwords(this.textBox1.Text, this.textBox2.Text));
+                this.c.addPassword(new Passwords(this.textBox1.Text, this.textBox2.Text).encrypt());
                 MessageBox.Show("Password added with success");
-                this.listPassword.renderPasswords();
                 this.Dispose();
             }
             catch (Exception ex)

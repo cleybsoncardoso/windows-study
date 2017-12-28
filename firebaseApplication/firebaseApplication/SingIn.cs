@@ -12,46 +12,32 @@ using System.Windows.Forms;
 
 namespace firebaseApplication
 {
-    public partial class SingIn : Form
+    /**
+     * Class responsible for sign in
+     * 
+     */
+    public partial class SignIn : Form
     {
-        Controller c;
+        Controller controller;
 
-        public SingIn()
+        public SignIn()
         {
             InitializeComponent();
-            this.c = new Controller();
+            this.controller = new Controller();
             this.textBoxEmail.Text = "cley@gmail.com";
             this.TextBoxPassword.Text = "123456";
         }
 
-        void myButton_Click(Object sender, System.EventArgs e)
-        {
-            MessageBox.Show("Click");
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        public void UserCriado(string email)
-        {
-            this.textBoxEmail.Text = email;
-            this.TextBoxPassword.Text = "";
-        }
-
+        //Method responsible for sign in
         private async void button2_Click(object sender, EventArgs e)
         {
             try
             {
-                FirebaseAuthLink fba = await this.c.login(this.textBoxEmail.Text, this.TextBoxPassword.Text);
-                new ListPasswords(this.c).Show();
-                this.TextBoxPassword.Text = "";
+                //sign in
+                await this.controller.login(this.textBoxEmail.Text, this.TextBoxPassword.Text);
+                //redirect for list passwords of the user logged
+                new ListPasswords(this.controller).Show();
+                //hiden screen SignIn for block for show only screen listPasswords
                 this.Hide();
             } catch(Exception ex)
             {
@@ -59,11 +45,13 @@ namespace firebaseApplication
             }
         }
 
-
+        //Method responsible for show screen sign up 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            new SingUp(this).Show();
-            this.Hide();
+            using (SignUp signUp = new SignUp())
+            {
+                signUp.ShowDialog();
+            }
         }
     }
 }
